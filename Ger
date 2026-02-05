@@ -1,0 +1,11 @@
+{
+  "name": "gmr-bot",
+  "version": "1.0.0",
+  "main": "GmR",
+  "dependencies": {
+    "mineflayer": "^4.20.0"
+  },
+  "scripts": {
+    "start": "node GmR"
+  }
+}
