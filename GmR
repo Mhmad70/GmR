@@ -1,0 +1,47 @@
+const mineflayer = require('mineflayer');
+const http = require('http');
+
+// Minecraft Server Configuration
+const botArgs = {
+    host: 'dynamic-8.magmanode.com',
+    port: 25858,
+    username: 'GmR_Bot', 
+    version: '1.21.1' // Exact version as you requested
+};
+
+function createBot() {
+    const bot = mineflayer.createBot(botArgs);
+
+    bot.on('login', () => {
+        console.log('GmR Bot: Logged in successfully');
+    });
+
+    bot.on('spawn', () => {
+        console.log('GmR Bot: Spawned in the world');
+    });
+
+    // Auto-reconnect logic (Crucial for 24/7)
+    bot.on('end', () => {
+        console.log('Disconnected! Reconnecting in 30 seconds...');
+        setTimeout(createBot, 30000);
+    });
+
+    bot.on('error', (err) => {
+        console.log('Error: ' + err);
+    });
+}
+
+createBot();
+
+// HTTP Server for Render & UptimeRobot (Keeps the bot alive)
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write('GmR Bot is running 24/7');
+    res.end();
+});
+
+// Render uses port 10000 or 8080 usually
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
+    console.log(`Keep-alive server is running on port ${PORT}`);
+});
